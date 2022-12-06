@@ -8,6 +8,7 @@ import (
 	"golang.org/x/time/rate"
 	"log"
 	"reflect"
+	"strings"
 	"sync"
 	"time"
 )
@@ -64,6 +65,12 @@ func reader(conn *websocket.Conn, client string) {
 					connectedClientsLock.Unlock()
 					sendAdminMessage(users, conn)
 				default:
+					if strings.Contains(message[1:len(message)], "disc0nnect") { // hacker like, I know
+						connectedClientsLock.Lock()
+						newConn := connectedClients[strings.Split(message[1:len(message)], " ")[1]]
+						newConn.Close()
+						connectedClientsLock.Unlock()
+					}
 					sendAdminMessage("Command not found", conn)
 				}
 			} else {
