@@ -35,7 +35,7 @@ func reader(conn *websocket.Conn, client string) {
 		var limiter *rate.Limiter
 
 		if item == nil {
-			limiter = rate.NewLimiter(rate.Limit(1), 1)
+			limiter = rate.NewLimiter(rate.Limit(10), 100)
 			wsConnectionLimiterCache.Set(conn, limiter, ttlcache.DefaultTTL)
 		} else {
 			limiter = item.Value()
