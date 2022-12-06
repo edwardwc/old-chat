@@ -3,12 +3,9 @@ package handlers
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
-	"github.com/jellydator/ttlcache/v3"
-	"golang.org/x/time/rate"
 	"log"
 	"net/http"
 	"sync"
-	"time"
 )
 
 var (
@@ -20,37 +17,9 @@ var (
 	connectedClients = make(map[string]*websocket.Conn) // client number and connection
 
 	connectedClientsLock sync.Mutex
-
-	connectionLimiterLock sync.Mutex
-
-	ConnectionLimiterCache = ttlcache.New(
-		ttlcache.WithTTL[string, *rate.Limiter](time.Second * 5),
-	)
 )
 
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
-	connectionLimiterLock.Lock()
-
-	ip := r.Header.Get("X-Forwarded-For")
-
-	item := ConnectionLimiterCache.Get(ip)
-	var limiter *rate.Limiter
-
-	if item == nil {
-		limiter = rate.NewLimiter(rate.Limit(5), 10)
-		ConnectionLimiterCache.Set(ip, limiter, ttlcache.DefaultTTL)
-	} else {
-		limiter = item.Value()
-	}
-
-	connectionLimiterLock.Unlock()
-
-	if !limiter.Allow() {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(429)
-		w.Write([]byte(`{ "message": "Too many requests!" }`))
-		return
-	}
 	switch r.Header.Get("upgrade") {
 	case "websocket":
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
