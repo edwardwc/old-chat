@@ -85,7 +85,7 @@ func HandleRequest(w http.ResponseWriter, r *http.Request) {
 		connectedClientsLock.Unlock()
 	default:
 		if r.URL.Path == "/" {
-			http.ServeFile(w, r, "./index.html")
+			http.ServeFile(w, r, "/root/chat/index.html")
 		}
 		w.WriteHeader(404)
 	}
