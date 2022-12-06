@@ -22,7 +22,6 @@ func main() {
 		BaseContext:       nil,
 		ConnContext:       nil,
 	}
-	go handlers.ConnectionLimiterCache.Start()
 	fmt.Println("Listening on :6969")
 	server.ListenAndServe()
 }
