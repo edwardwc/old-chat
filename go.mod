@@ -1,4 +1,4 @@
-module chat
+module e2ee-chat
 
 go 1.19
 
