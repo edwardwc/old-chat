@@ -2,6 +2,7 @@ package main
 
 import (
 	"e2ee-chat/handlers"
+	"fmt"
 	"net/http"
 )
 
@@ -22,5 +23,6 @@ func main() {
 		ConnContext:       nil,
 	}
 	go handlers.ConnectionLimiterCache.Start()
+	fmt.Println("Listening on :6969")
 	server.ListenAndServe()
 }

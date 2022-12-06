@@ -84,6 +84,9 @@ func HandleRequest(w http.ResponseWriter, r *http.Request) {
 		delete(connectedClients, name)
 		connectedClientsLock.Unlock()
 	default:
-		w.Write([]byte("Regular request detected"))
+		if r.URL.Path == "/" {
+			http.ServeFile(w, r, "./index.html")
+		}
+		w.WriteHeader(404)
 	}
 }
