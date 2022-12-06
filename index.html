@@ -107,7 +107,6 @@
                 log(data.Sender + ": " + data.Message, 'info');
                 socket.send("/users");
             } else if (data.Sender === "update") {
-                console.log(data.Message)
                 $clients.innerHTML = data.Message
             } else {
                 log(JSON.parse(ev.data).Sender + ": " + JSON.parse(ev.data).Message, 'message')

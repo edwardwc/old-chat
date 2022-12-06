@@ -101,7 +101,7 @@ func sendToAllClients(message string, sender string, msgtype int, conn *websocke
 	connectedClientsLock.Lock()
 	for _, v := range connectedClients {
 		if v == conn {
-			if err := v.WriteMessage(msgtype, []byte(fmt.Sprintf(`{"Sender":"%v (you)":"%v"}`, sender, message))); err != nil {
+			if err := v.WriteMessage(msgtype, []byte(fmt.Sprintf(`{"Sender":"%v (you)","Message":"%v"}`, sender, message))); err != nil {
 				log.Println(err)
 			}
 		} else {
