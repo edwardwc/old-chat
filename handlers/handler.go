@@ -6,7 +6,6 @@ import (
 	"github.com/jellydator/ttlcache/v3"
 	"golang.org/x/time/rate"
 	"log"
-	"net"
 	"net/http"
 	"sync"
 	"time"
@@ -32,7 +31,7 @@ var (
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
 	connectionLimiterLock.Lock()
 
-	ip, _, _ := net.SplitHostPort(r.RemoteAddr)
+	ip := r.Header.Get("X-Forwarded-For")
 
 	item := ConnectionLimiterCache.Get(ip)
 	var limiter *rate.Limiter
