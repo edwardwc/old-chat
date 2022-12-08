@@ -20,8 +20,8 @@ var (
 )
 
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.Header.Get("upgrade"))
-	switch r.Header.Get("upgrade") {
+	fmt.Println(r.Header.Get("Upgrade"))
+	switch r.Header.Get("Upgrade") {
 	case "websocket":
 		fmt.Println("Websocket")
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
