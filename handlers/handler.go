@@ -20,6 +20,7 @@ var (
 )
 
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.Header.Get("upgrade"))
 	switch r.Header.Get("upgrade") {
 	case "websocket":
 		fmt.Println("Websocket")
