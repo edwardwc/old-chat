@@ -20,10 +20,8 @@ var (
 )
 
 func HandleRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.Header.Get("Upgrade"))
 	switch r.Header.Get("Upgrade") {
 	case "websocket":
-		fmt.Println("Websocket")
 		upgrader.CheckOrigin = func(r *http.Request) bool { return true }
 
 		// upgrade this connection to a WebSocket
@@ -55,11 +53,9 @@ func HandleRequest(w http.ResponseWriter, r *http.Request) {
 		connectedClientsLock.Unlock()
 	default:
 		if r.URL.Path == "/" {
-			fmt.Println("wow lol")
 			http.ServeFile(w, r, "/root/chat/index.html")
 			return
 		}
-		fmt.Println("not websocket")
 		w.WriteHeader(404)
 	}
 }
